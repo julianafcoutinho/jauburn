@@ -310,3 +310,29 @@ JbParserTest >> testVariableDeclarationStatement [
 	stmt := self parse: 'var monkey = 37*x;' rule: #variableDeclarationStatement.
 	self assert: stmt identifier equals: 'monkey'
 ]
+
+{ #category : #'tests-statements' }
+JbParserTest >> testWhileStatement [
+
+	| stmt |
+	stmt := self parse: 'while (x > y) {};' rule: #statement.
+	self assert: stmt condition operator equals: '>'.
+	self assert: stmt condition lhs identifier equals: 'x'.
+	self assert: stmt condition rhs identifier equals: 'y'.
+	stmt := self parse: 'if(x>y){};' rule: #statement.
+	self assert: stmt condition operator equals: '>'.
+	self assert: stmt condition lhs identifier equals: 'x'.
+	self assert: stmt condition rhs identifier equals: 'y'.
+	stmt := self parse: 'if(x>y){var x=1;};' rule: #statement.
+	self assert: stmt condition operator equals: '>'.
+	self assert: stmt condition lhs identifier equals: 'x'.
+	self assert: stmt condition rhs identifier equals: 'y'.
+	stmt := self parse: 'if(x>y){var x=1;x=3;};' rule: #statement.
+	self assert: stmt condition operator equals: '>'.
+	self assert: stmt condition lhs identifier equals: 'x'.
+	self assert: stmt condition rhs identifier equals: 'y'.
+	stmt := self parse: 'zebra = 3 *x + 1;' rule: #statement.
+	self assert: stmt identifier equals: 'zebra'.
+	stmt := self parse: 'return x*y+1;' rule: #statement.
+	self assert: stmt expression lhs lhs identifier equals: 'x'
+]

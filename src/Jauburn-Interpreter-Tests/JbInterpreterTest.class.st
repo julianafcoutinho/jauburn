@@ -47,6 +47,23 @@ JbInterpreterTest >> testDeclarationCreatesVariable [
 ]
 
 { #category : #running }
+JbInterpreterTest >> testIfElseStatementEvaluatesCorrectly [ 
+
+	self interpret: 'var x = 0;if(1>0){var x=1;}else{var x = 2;}'.
+	self assert: (interpreter environment at: 'x') equals: 1.
+
+	self interpret: 'var x = 0;if(1>2){var x=1;}else{var x = 2;}'.
+	self assert: (interpreter environment at: 'x') equals: 2.
+		
+	self interpret: 'var x = 0;if(1>0){}else{}'.
+	self assert: (interpreter environment at: 'x') equals: 0.
+
+	self interpret: 'var x = 3 + 2 + 5 + 1;'.
+	self assert: (interpreter environment at: 'x') equals: 11.
+	
+]
+
+{ #category : #running }
 JbInterpreterTest >> testIfStatementEvaluatesCorrectly [ 
 
 	self interpret: 'var x = 0;if(1>0){var x=1;};'.

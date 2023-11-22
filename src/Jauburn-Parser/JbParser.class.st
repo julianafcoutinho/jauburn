@@ -299,9 +299,9 @@ JbParser >> variableDeclarationStatement [
 { #category : #statements }
 JbParser >> whileStatement [
 
-	^ ('if' asParser trim, '(' asParser trim , arithmeticExpression , ')') trim , '{' asParser trim, 	statement star, '}' asParser trim, ';' asParser trim
-	  ==> [ :arr | JbIfStatementNode new 
-		condition: arr allButFirst;
-		body:arr ;
+	^ 'while' asParser trim, $( asParser trim , expression , $) asParser trim  , statementBlock, ';' asParser trim
+	  ==> [ :arr | JbWhileStatementNode new 
+		condition: arr third;
+		body:arr fifth;
 		yourself ]
 ]
