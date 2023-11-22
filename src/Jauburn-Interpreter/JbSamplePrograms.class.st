@@ -1,6 +1,3 @@
-"
-Just a place to house a few sample programs
-"
 Class {
 	#name : #JbSamplePrograms,
 	#superclass : #Object,

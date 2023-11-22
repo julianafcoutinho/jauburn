@@ -1,118 +1,3 @@
-"
-I am a parser for the Jauburn language.
-
-EBNF
-
-
-<program> ::=
-   <statement>*
-
-<statement> ::=
-   <variable-declaration-statement>
-   | <assignment-statement>
-   | <if-else-statement>
-   | <if-statement>
-
-<variable-declaration-statement> ::=
-   var <identifier> = <expression> ;
-
-<assignment-statement> ::=
-   <identifier> = <expression> ;
-
-<if-statement> ::=
-   if '(' <expression> ')' <statement-block>
-
-<if-else-statement> ::=
-   if '(' <expression> ')' <statement-block> else <statement-block>
-
-/* Cannot be in <keyword> */
-<identifier> ::=
-   <letter> <letter-or-digit-or-underscore>*
-
-<keyword> ::=
-   if
-   | var
-   | function
-
-<expression> ::=
-   <function-definition-expression>
-   | <function-call-expression>
-   | <arithmetic-expression>
-   | <comparison-expression>
-
-<function-definition-expression> ::=
-   function '(' <identifier-list> ')' <statement-block>
-
-<statement-block> ::=
-   '{' <statement>* '}'
-
-<identifier-list> ::=
-   <identifier>
-   | <identifier> , <identifier-list>
-   | epsilon    /* the empty expression */
-
-<function-call-expression> ::=
-   <identifier> '(' <expression-list> ')'
-
-<expression-list> ::=
-   <expression>
-   | <expression> , <expression-list>
-   | epsilon
-
-
-/*
- * A very simple grammar for comparison expressions.
- */
-<comparison-expression> ::=
-   <arithmetic-expression> == <arithmetic-expression>
-   | <arithmetic-expression> < <arithmetic-expression>
-   | <arithmetic-expression> <= <arithmetic-expression>
-   | <arithmetic-expression> > <arithmetic-expression>
-   | <arithmetic-expression> >= <arithmetic-expression>
-   | <arithmetic-expression> != <arithmetic-expression>
-
-/*
- * Expression grammar.  Note: this grammar isn't used directly by this paser.
- * Instead we are using a PPExpressionParser which takes care of precedence etc.
- * However, this grammar is correct for BNF purposes.
- */
-
-<arithmetic-expression> ::=
-   <arithmetic-expression> '+' <term>
-   | <arithmetic-expression> '-' <term>
-   | <term>
-
-<term> ::=
-   <term> '*' <factor>
-   | <term> '/' <factor>
-   | <factor>
-
-<factor> ::=
-   '(' <arithmetic-expression> ')'
-   | <number>
-   | <idenfitier>
-
-
-/* integer grammar from slides */
-digit_not_zero> ::=
-   1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
-<digit> ::= 
-   0 
-   | <digit_not_zero>
-<integer> ::=
-   '-'? <digit_not_zero><digit>* 
-   | 0
-
-/* we can use #word asParser here */
-<letter> ::=
-   /  a character in set a-z or set 	A-Z   /
-
-<letter-or-digit-or-underscore> ::=
-   <digit>
-   | <letter>
-   | '_'
-
-"
 Class {
 	#name : #JbParser,
 	#superclass : #PPCompositeParser,
@@ -136,7 +21,11 @@ Class {
 		'stringComparisonExpression',
 		'booleanExpression',
 		'functionCallStatement',
-		'printStatement'
+		'printStatement',
+		'ifStatement',
+		'whileStatement',
+		'inputStatement',
+		'ifElseStatement'
 	],
 	#category : #'Jauburn-Parser-Core'
 }
@@ -285,6 +174,37 @@ JbParser >> identifierExpressionList [
 					result ] ]
 ]
 
+{ #category : #statements }
+JbParser >> ifElseStatement [
+
+	^ 'if' asParser trim, $( asParser trim , expression , $) asParser trim  , statementBlock, 'else' asParser trim, statementBlock
+	  ==> [ :arr | JbIfElseStatementNode new 
+		condition: arr third;
+		body:arr fifth;
+		else: arr seventh;
+		yourself ]
+]
+
+{ #category : #statements }
+JbParser >> ifStatement [
+
+	^ 'if' asParser trim, $( asParser trim , expression , $) asParser trim  , statementBlock, ';' asParser trim
+	  ==> [ :arr | JbIfStatementNode new 
+		condition: arr third;
+		body:arr fifth;
+		yourself ]
+]
+
+{ #category : #statements }
+JbParser >> inputStatement [
+
+	^ ('if' asParser trim, '(' asParser trim , arithmeticExpression , ')') trim , '{' asParser trim, 	statement star, '}' asParser trim, ';' asParser trim
+	  ==> [ :arr | JbIfStatementNode new 
+		condition: arr allButFirst;
+		body:arr ;
+		yourself ]
+]
+
 { #category : #'low-level' }
 JbParser >> keyword [ 
 
@@ -330,7 +250,7 @@ JbParser >> start [
 JbParser >> statement [
 
 	^ variableDeclarationStatement / assignmentStatement
-	  / returnStatement / functionCallStatement / printStatement
+	  / returnStatement / functionCallStatement / printStatement / ifStatement /ifElseStatement / 		whileStatement / inputStatement 
 ]
 
 { #category : #statements }
@@ -374,4 +294,14 @@ JbParser >> variableDeclarationStatement [
 		  identifier: arr second;
 		  expression: arr fourth;
 		  yourself ]
+]
+
+{ #category : #statements }
+JbParser >> whileStatement [
+
+	^ ('if' asParser trim, '(' asParser trim , arithmeticExpression , ')') trim , '{' asParser trim, 	statement star, '}' asParser trim, ';' asParser trim
+	  ==> [ :arr | JbIfStatementNode new 
+		condition: arr allButFirst;
+		body:arr ;
+		yourself ]
 ]

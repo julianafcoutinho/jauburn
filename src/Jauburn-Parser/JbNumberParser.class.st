@@ -1,6 +1,3 @@
-"
-I handle the parsing of numbers is Jauburn.  I'm basically the CPIntegerParser introduced in the class videos.
-"
 Class {
 	#name : #JbNumberParser,
 	#superclass : #PPCompositeParser,
@@ -29,7 +26,7 @@ JbNumberParser >> digitNotZero [
 { #category : #'non-terminals' }
 JbNumberParser >> integer [
 
-	^($- asParser optional , digitNotZero , digit star / $0 asParser) flatten 
+	^($- asParser optional , ((digitNotZero, digit star, '.' asParser optional) / ($0 asParser , '.' asParser), digit star ) / $0 asParser )   flatten 
 			==> [ :str | str asNumber ]
 ]
 

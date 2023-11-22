@@ -1,6 +1,3 @@
-"
-I parse arithmetic expressions
-"
 Class {
 	#name : #JbArithmeticExpressionParser,
 	#superclass : #PPCompositeParser,
@@ -24,12 +21,16 @@ JbArithmeticExpressionParser class >> dependencies [
 { #category : #'non-terminals' }
 JbArithmeticExpressionParser >> arithmeticExpression [
 
-	^ arithmeticTerm , '+' asParser trim , arithmeticExpression
+	^ arithmeticTerm , ($+ asParser trim /$- asParser trim), arithmeticExpression
 	  ==> [ :arr | 
-		  JbAdditionNode new
+		(arr second = $+) ifTrue: [ JbAdditionNode   new
 			  lhs: arr first;
-			  rhs: arr third;
-			  yourself ] / arithmeticTerm
+				rhs: arr third;
+			  yourself]
+		ifFalse: [(arr second = $-) ifTrue: [ JbSubtractionNode new
+		  lhs: arr third;
+		  rhs: arr first;
+		   yourself ]]] / arithmeticTerm 
 ]
 
 { #category : #'non-terminals' }
@@ -43,11 +44,21 @@ JbArithmeticExpressionParser >> arithmeticFactor [
 { #category : #'non-terminals' }
 JbArithmeticExpressionParser >> arithmeticTerm [
 
-	^ arithmeticFactor , $* asParser trim , arithmeticTerm ==> [ :arr | 
-	  JbMultiplicationNode new
+	^ arithmeticFactor , ($* asParser trim / $/ asParser trim / $% asParser trim), arithmeticTerm ==> [ :arr | 
+		(arr second = $*)  ifTrue: [ JbMultiplicationNode new
 		  lhs: arr first;
 		  rhs: arr third;
-		  yourself ] / arithmeticFactor
+		  yourself  ] ifFalse: [ 
+	(arr second = $/) ifTrue: [ JbDivisionNode new
+		  lhs: arr first;
+		  rhs: arr third;
+		  yourself  ] ifFalse: [ 
+	(arr second = $%) ifTrue: [ JbModulusNode  new
+		  lhs: arr first;
+		  rhs: arr third;
+		  yourself  ]]].] / arithmeticFactor
+	
+
 ]
 
 { #category : #'non-terminals' }

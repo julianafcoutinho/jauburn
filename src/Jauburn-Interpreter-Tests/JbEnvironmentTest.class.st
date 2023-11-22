@@ -1,6 +1,3 @@
-"
-This is a copy of the unit tests for the Phsyche PEnvironment class.
-"
 Class {
 	#name : #JbEnvironmentTest,
 	#superclass : #TestCase,

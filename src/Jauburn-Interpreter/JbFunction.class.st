@@ -1,10 +1,3 @@
-"
-I am the value that results from evaluating a function.  My i-vars
-
-	parameters -- collection holding names of my parameters 
-	environment -- a JbEnvironment instance holding the environment in effect when I was created (closures!)
-	body -- an AST node for the body of this function
-"
 Class {
 	#name : #JbFunction,
 	#superclass : #Object,

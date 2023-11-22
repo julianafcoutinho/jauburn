@@ -1,6 +1,3 @@
-"
-This is a copy of the Phsyche PEnvironment class
-"
 Class {
 	#name : #JbEnvironment,
 	#superclass : #Object,

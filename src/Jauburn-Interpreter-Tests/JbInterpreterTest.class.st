@@ -31,11 +31,12 @@ JbInterpreterTest >> testAssignmentChangesVariableToExpressionValue [
 { #category : #running }
 JbInterpreterTest >> testDeclarationBindsVariableToExpressionValue [
 
-	self interpret: 'var x = 3 + 2 * 8;'.
-	self assert: (interpreter environment at: 'x') equals: 19.
-	
 	self interpret: 'var x = 6;var y = 2*x;'.
-	self assert: (interpreter environment at: 'y') equals: 12
+	self assert: (interpreter environment at: 'y') equals: 12.
+
+	self interpret: 'var x = 3 + 2 + 5 + 1;'.
+	self assert: (interpreter environment at: 'x') equals: 11.
+	
 ]
 
 { #category : #running }
@@ -43,4 +44,40 @@ JbInterpreterTest >> testDeclarationCreatesVariable [
 
 	self interpret: 'var x = 99;'.
 	self assert: (interpreter environment includesKey: 'x')
+]
+
+{ #category : #running }
+JbInterpreterTest >> testIfStatementEvaluatesCorrectly [ 
+
+	self interpret: 'var x = 0;if(1>0){var x=1;};'.
+	self assert: (interpreter environment at: 'x') equals: 1.
+
+	self interpret: 'var x = 0;if(1>2){var x=1;};'.
+	self assert: (interpreter environment at: 'x') equals: 0.
+		
+	self interpret: 'var x = 0;if(1>0){x = x + 2; x = x * 2;};'.
+	self assert: (interpreter environment at: 'x') equals: 4.
+
+	self interpret: 'var x = 3 + 2 + 5 + 1;'.
+	self assert: (interpreter environment at: 'x') equals: 11.
+	
+]
+
+{ #category : #running }
+JbInterpreterTest >> testWRONGDeclarationBindsVariableToExpressionValue [
+
+	self interpret: 'var x = 3 + 2 * 8;'.
+	self assert: (interpreter environment at: 'x') equals: 19.
+	
+	self interpret: 'var x = 6;var y = 2*x;'.
+	self assert: (interpreter environment at: 'y') equals: 12.
+
+	self interpret: 'var x = 3 + 2 + 5 + 1;'.
+	self assert: (interpreter environment at: 'x') equals: 11.
+	
+	self interpret: 'var x = 3 + 2 - 5 + 1;'.
+	self assert: (interpreter environment at: 'x') equals: -1.
+	
+	self interpret: 'var x = 3 - 5 +2 + 1;'.
+	self assert: (interpreter environment at: 'x') equals: -5.
 ]

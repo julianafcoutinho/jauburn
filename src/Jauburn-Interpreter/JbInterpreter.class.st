@@ -1,9 +1,3 @@
-"
-I am an interpreter for programs written in the Jauburn language.  My principle API methods are:
-
-	interpret: anAST -- given an abstract syntax tree, interpret it
-	run: aString -- parse and interpret the supplied string
-"
 Class {
 	#name : #JbInterpreter,
 	#superclass : #Object,
