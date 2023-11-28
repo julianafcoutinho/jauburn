@@ -186,7 +186,7 @@ JbParser >> ifElseStatement [
 ]
 
 { #category : #statements }
-JbParser >> ifStatement [
+JbParser >> ifStatement [ 
 
 	^ 'if' asParser trim, $( asParser trim , expression , $) asParser trim  , statementBlock, ';' asParser trim
 	  ==> [ :arr | JbIfStatementNode new 
@@ -198,10 +198,9 @@ JbParser >> ifStatement [
 { #category : #statements }
 JbParser >> inputStatement [
 
-	^ ('if' asParser trim, '(' asParser trim , arithmeticExpression , ')') trim , '{' asParser trim, 	statement star, '}' asParser trim, ';' asParser trim
-	  ==> [ :arr | JbIfStatementNode new 
-		condition: arr allButFirst;
-		body:arr ;
+	^ ('inputnum' asParser, #space asParser) trim, identifier, ';' asParser
+	  ==> [ :arr | JbInputStatementNode new 
+		identifier: arr second
 		yourself ]
 ]
 

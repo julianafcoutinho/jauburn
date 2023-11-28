@@ -13,7 +13,7 @@ JbArity2OperatorNode >> evaluateIn: environment [
 	self operator = $/
 		ifTrue: [ ^lhsValue / rhsValue ].
 	self operator = $-
-		ifTrue: [ ^rhsValue - lhsValue ].
+		ifTrue: [ ^lhsValue - rhsValue ].
 	self operator = $%
 		ifTrue: [ ^lhsValue % rhsValue ]
 ]

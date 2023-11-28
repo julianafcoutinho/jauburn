@@ -35,5 +35,5 @@ JbWhileStatementNode >> condition: anObject [
 { #category : #'as yet unclassified' }
 JbWhileStatementNode >> executeIn: anEnvironment [
 
-	(condition evaluateIn: anEnvironment) ifTrue: [body do: [:each | each executeIn: anEnvironment]]
+	[condition evaluateIn: anEnvironment] whileTrue: [body do: [:each | each executeIn: anEnvironment]]
 ]

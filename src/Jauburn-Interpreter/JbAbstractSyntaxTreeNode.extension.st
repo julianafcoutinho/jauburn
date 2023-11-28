@@ -12,3 +12,9 @@ JbAbstractSyntaxTreeNode >> executeIn: aContext [
 
 	self error: 'Statements must override this method.  Expressions _must not_ override this method since it is an error to send #executeIn: to an expression.'
 ]
+
+{ #category : #'*Jauburn-Interpreter' }
+JbAbstractSyntaxTreeNode >> executeIn: aContext interpreter: anInterpreter [
+
+	self executeIn: aContext
+]

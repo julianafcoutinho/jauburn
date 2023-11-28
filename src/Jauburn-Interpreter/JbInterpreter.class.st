@@ -2,7 +2,8 @@ Class {
 	#name : #JbInterpreter,
 	#superclass : #Object,
 	#instVars : [
-		'environment'
+		'environment',
+		'uiManager'
 	],
 	#category : #'Jauburn-Interpreter-Core'
 }
@@ -48,4 +49,18 @@ JbInterpreter >> run: programString [
 	"Just an alias for #interpret:"
 
 	self interpret: programString
+]
+
+{ #category : #accessing }
+JbInterpreter >> uiManager [ 
+
+	^ uiManager
+
+
+]
+
+{ #category : #accessing }
+JbInterpreter >> uiManager: aValue [
+	environment fakeManager: aValue.
+	"aValue ifNil: [ uiManager := (UIManager default request: 'Enter a number') ] ifNotNil: [ uiManager := aValue ]"
 ]

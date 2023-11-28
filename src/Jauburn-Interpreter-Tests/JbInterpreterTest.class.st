@@ -47,7 +47,26 @@ JbInterpreterTest >> testDeclarationCreatesVariable [
 ]
 
 { #category : #running }
-JbInterpreterTest >> testIfElseStatementEvaluatesCorrectly [ 
+JbInterpreterTest >> testFunctionCallStatementExecutesCorrectly [ 
+
+	self interpret: 'var x = 1; var fun = function(a, b, monkey){x = a+b;}; fun(1, 2, 3);'.
+	self assert: (interpreter environment at: 'x') equals: 3.
+	
+	self interpret: 'var y = 1; var fun = function(a, b, monkey) {y = 2; var z = 1; return a+b;}; var x = fun(1, 2, 3);'.
+	self assert: (interpreter environment at: 'y') equals: 2.
+	
+	self interpret: 'var y = 1; var fun = function(a, b, monkey) {y = 2; var z = 1; return a+b; y=3;}; var x = fun(1, 2, 3);'.
+	self assert: (interpreter environment at: 'y') equals: 2.
+	
+	self interpret: 'var y = 1; var fun = function(a, b, monkey) {y = 2; var z = 1; return a+b; y=3;}; var x = fun(-99, -99, 3);'.
+	self assert: (interpreter environment at: 'x') equals: -198.
+	
+	self interpret: 'var y = 1; var fun = function(a, b, monkey) {return a>b; y=3;}; var x = fun(1, 2, 3);'.
+	self assert: (interpreter environment at: 'x') equals: false.
+]
+
+{ #category : #running }
+JbInterpreterTest >> testIfElseStatementExecutesCorrectly [ 
 
 	self interpret: 'var x = 0;if(1>0){var x=1;}else{var x = 2;}'.
 	self assert: (interpreter environment at: 'x') equals: 1.
@@ -64,7 +83,7 @@ JbInterpreterTest >> testIfElseStatementEvaluatesCorrectly [
 ]
 
 { #category : #running }
-JbInterpreterTest >> testIfStatementEvaluatesCorrectly [ 
+JbInterpreterTest >> testIfStatementExecutesCorrectly [ 
 
 	self interpret: 'var x = 0;if(1>0){var x=1;};'.
 	self assert: (interpreter environment at: 'x') equals: 1.
@@ -78,6 +97,21 @@ JbInterpreterTest >> testIfStatementEvaluatesCorrectly [
 	self interpret: 'var x = 3 + 2 + 5 + 1;'.
 	self assert: (interpreter environment at: 'x') equals: 11.
 	
+]
+
+{ #category : #running }
+JbInterpreterTest >> testInputStatementExecutesCorrectlyWithInputs1and10 [
+	interpreter uiManager: 2.
+	self interpret: 'inputnum a;'.
+	self assert: (interpreter environment at: 'a') equals: 2.
+	
+	interpreter uiManager: 1.23.
+	self interpret: 'inputnum pearl;'.
+	self assert: (interpreter environment at: 'pearl') equals: 1.23.
+	
+	interpreter uiManager: 45.
+	self interpret: 'inputnum pearl;'.
+	self assert: (interpreter environment at: 'pearl') equals: 45.
 ]
 
 { #category : #running }
@@ -97,4 +131,21 @@ JbInterpreterTest >> testWRONGDeclarationBindsVariableToExpressionValue [
 	
 	self interpret: 'var x = 3 - 5 +2 + 1;'.
 	self assert: (interpreter environment at: 'x') equals: -5.
+]
+
+{ #category : #running }
+JbInterpreterTest >> testWhileStatementExecutesCorrectly [ 
+
+	self interpret: 'var x = 0;while(x>0){var x=1;x=x+1;};'.
+	self assert: (interpreter environment at: 'x') equals: 0.
+
+	self interpret: 'var x = 0;while(x<5){x=x+1;};'.
+	self assert: (interpreter environment at: 'x') equals: 5.
+		
+	self interpret: 'var x = 0;while(x>5){};'.
+	self assert: (interpreter environment at: 'x') equals: 0.
+
+	self interpret: 'var x = 3 + 2 + 5 + 1;'.
+	self assert: (interpreter environment at: 'x') equals: 11.
+	
 ]

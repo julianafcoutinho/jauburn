@@ -3,7 +3,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'bindings',
-		'outerEnvironment'
+		'outerEnvironment',
+		'fakeManager'
 	],
 	#category : #'Jauburn-Interpreter-Core'
 }
@@ -25,6 +26,18 @@ JbEnvironment >> at: aKey [
 JbEnvironment >> at: aKey put: aValue [
 
 	bindings at: aKey put: aValue
+]
+
+{ #category : #accessing }
+JbEnvironment >> fakeManager [
+
+	^ fakeManager
+]
+
+{ #category : #accessing }
+JbEnvironment >> fakeManager: anObject [
+
+	fakeManager := anObject
 ]
 
 { #category : #accessing }
