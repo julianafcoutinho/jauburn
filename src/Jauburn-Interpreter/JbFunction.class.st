@@ -22,13 +22,11 @@ JbFunction >> body: anObject [
 { #category : #api }
 JbFunction >> call: arguments in: callEnvironment [
 	
-	| localEnvironment |
-	localEnvironment := JbEnvironment new outerEnvironment: callEnvironment.
-	arguments with: parameters do: [:arg :par | localEnvironment at: par identifier put: arg value].
-	^[[body do: [:each | each executeIn: localEnvironment].]
-	on: ReturnStatementReached do: [ :ex | ^ ex returnValue  ]]
-	ensure:
-	[localEnvironment variableNames do: [:local | (callEnvironment includesKey: local) 	ifTrue: 	[callEnvironment at: local put: (localEnvironment at: local)]]]
+	
+	environment:= (JbEnvironment new outerEnvironment: callEnvironment).
+	arguments with: parameters do: [:arg :par | environment at: par identifier put: arg value].
+	^[body do: [:each | each executeIn: environment].]
+	on: ReturnStatementReached do: [ :ex | ^ ex returnValue  ]
 	
 	
 	

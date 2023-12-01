@@ -20,10 +20,13 @@ JbFunctionCallNode >> arguments: anObject [
 
 { #category : #'as yet unclassified' }
 JbFunctionCallNode >> evaluateIn: environment [
-	| functionCalled |
+	| functionCalled evaluatedArguments |
 	functionCalled  := environment at: identifier.		
+	evaluatedArguments := OrderedCollection new.
 	
-	^[functionCalled call: arguments in: environment]
+	arguments do: [ :each | evaluatedArguments add: (each evaluateIn: environment)].	
+	
+	^[functionCalled call: evaluatedArguments in: environment]
 	on: ReturnStatementReached do: [  ]
 	
 	
@@ -33,10 +36,13 @@ JbFunctionCallNode >> evaluateIn: environment [
 
 { #category : #'as yet unclassified' }
 JbFunctionCallNode >> executeIn: environment [
-	| functionCalled |
-	functionCalled  := environment at: identifier.		
+	| functionCalled evaluatedArguments |
+	functionCalled  := environment at: identifier.	
+	evaluatedArguments := OrderedCollection new.	
 	
-	^[functionCalled call: arguments in: environment]
+	arguments do: [ :each | (environment includesKey: each) ifTrue: [evaluatedArguments add: (environment at: each)] ifFalse: [evaluatedArguments add: each]].
+	
+	^[functionCalled call: evaluatedArguments in: environment]
 	on: ReturnStatementReached do: [ :ex | ^ ex returnValue ]
 	
 	

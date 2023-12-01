@@ -18,6 +18,23 @@ print 5*y;'
 ]
 
 { #category : #'sample programs' }
+JbSamplePrograms class >> computeGCD [
+
+	"Run with JbSamplePrograms computeSqrt."
+	^ JbInterpreter newWithStandardLibrary  run: 'var a = gcd(', (UIManager default request: 'Enter the first number' initialAnswer: '0' title: 'Greatest Common Divisor' ), ',', (UIManager default request: 'Enter another number.'), '); print a;'
+]
+
+{ #category : #'sample programs' }
+JbSamplePrograms class >> computeSqrt [
+
+	"self run: self assignAndPrint"
+	|aValue| 
+	aValue := UIManager default request: 'Enter a number.'.
+	^ JbInterpreter newWithStandardLibrary  run: 'var a = sqrt(', aValue, '); print a;'
+
+]
+
+{ #category : #'sample programs' }
 JbSamplePrograms class >> noFunctions [
 
 	"self run: self noFunctions"
@@ -33,5 +50,5 @@ JbSamplePrograms class >> run: aString [
 
 	"Look at sample programs for examples of using this method."
 
-	^ JbInterpreter new run: aString
+	^ JbInterpreter newWithStandardLibrary  run: aString
 ]

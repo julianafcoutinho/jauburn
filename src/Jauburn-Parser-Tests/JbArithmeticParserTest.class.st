@@ -108,8 +108,8 @@ JbArithmeticParserTest >> testArithmeticExpressionSubDivMod [
 
 	| expression |
 	expression := self parse: '3-4' rule: #arithmeticExpression.
-	self assertNode: expression lhs isConstant: 4.
-	self assertNode: expression rhs isConstant: 3.
+	self assertNode: expression lhs isConstant: 3.
+	self assertNode: expression rhs isConstant: 4.
 	self assertNode: expression isOperator: $-.
 	expression := self parse: '3*4' rule: #arithmeticExpression.
 	self assertNode: expression lhs isConstant: 3.
@@ -137,8 +137,8 @@ JbArithmeticParserTest >> testArithmeticExpressionWithThreeEqualPrecedenceOperat
 	| expression |
 	expression := self parse: '3+2-5+1' rule: #arithmeticExpression.
 	self assertNode: expression isOperator: $+.
-	self assertNode: expression rhs isOperator: $-.
-	self assertNode: expression lhs isConstant: 3.
+	self assertNode: expression rhs isConstant: 1.
+	self assertNode: expression lhs isOperator: $-.
 	self assertNode: expression rhs rhs isConstant: 2.
 	self assertNode: expression rhs lhs isOperator: $+.
 	self assertNode: expression rhs lhs lhs isConstant: 5.

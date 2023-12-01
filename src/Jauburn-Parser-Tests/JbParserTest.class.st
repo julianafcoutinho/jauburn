@@ -186,19 +186,19 @@ JbParserTest >> testIdentifierExpressionList [
 JbParserTest >> testIfElseStatement [
 
 	| stmt |
-	stmt := self parse: 'if (x > y) {}else {}' rule: #statement.
+	stmt := self parse: 'if(x>y){}else{}' rule: #statement.
 	self assert: stmt condition operator equals: '>'.
 	self assert: stmt condition lhs identifier equals: 'x'.
 	self assert: stmt condition rhs identifier equals: 'y'.
-	stmt := self parse: 'if(x>y){};' rule: #statement.
+	stmt := self parse: 'if(x>y){}' rule: #statement.
 	self assert: stmt condition operator equals: '>'.
 	self assert: stmt condition lhs identifier equals: 'x'.
 	self assert: stmt condition rhs identifier equals: 'y'.
-	stmt := self parse: 'if(x>y){var x=1;};' rule: #statement.
+	stmt := self parse: 'if(x>y){var x=1;}' rule: #statement.
 	self assert: stmt condition operator equals: '>'.
 	self assert: stmt condition lhs identifier equals: 'x'.
 	self assert: stmt condition rhs identifier equals: 'y'.
-	stmt := self parse: 'if(x>y){var x=1;x=3;};' rule: #statement.
+	stmt := self parse: 'if(x>y){var x=1;x=3;}' rule: #statement.
 	self assert: stmt condition operator equals: '>'.
 	self assert: stmt condition lhs identifier equals: 'x'.
 	self assert: stmt condition rhs identifier equals: 'y'.
@@ -213,19 +213,19 @@ JbParserTest >> testIfStatement [
 
 	| stmt |
 	
-	stmt := self parse: 'if (x > y) {};' rule: #statement.
+	stmt := self parse: 'if (x > y) {}' rule: #statement.
 	self assert: stmt condition operator equals: '>'.
 	self assert: stmt condition lhs identifier equals: 'x'.
 	self assert: stmt condition rhs identifier equals: 'y'.
-	stmt := self parse: 'if(x>y){};' rule: #statement.
+	stmt := self parse: 'if(x>y){}' rule: #statement.
 	self assert: stmt condition operator equals: '>'.
 	self assert: stmt condition lhs identifier equals: 'x'.
 	self assert: stmt condition rhs identifier equals: 'y'.
-	stmt := self parse: 'if(x>y){var x=1;};' rule: #statement.
+	stmt := self parse: 'if(x>y){var x=1;}' rule: #statement.
 	self assert: stmt condition operator equals: '>'.
 	self assert: stmt condition lhs identifier equals: 'x'.
 	self assert: stmt condition rhs identifier equals: 'y'.
-	stmt := self parse: 'if(x>y){var x=1;x=3;};' rule: #statement.
+	stmt := self parse: 'if(x>y){var x=1;x=3;}' rule: #statement.
 	self assert: stmt condition operator equals: '>'.
 	self assert: stmt condition lhs identifier equals: 'x'.
 	self assert: stmt condition rhs identifier equals: 'y'.
@@ -344,19 +344,19 @@ JbParserTest >> testVariableDeclarationStatement [
 JbParserTest >> testWhileStatement [
 
 	| stmt |
-	stmt := self parse: 'while (x > y) {};' rule: #statement.
+	stmt := self parse: 'while (x > y) {}' rule: #statement.
 	self assert: stmt condition operator equals: '>'.
 	self assert: stmt condition lhs identifier equals: 'x'.
 	self assert: stmt condition rhs identifier equals: 'y'.
-	stmt := self parse: 'while(x>1){x = x + 1;};' rule: #statement.
+	stmt := self parse: 'while(x>1){x = x + 1;}' rule: #statement.
 	self assert: stmt condition operator equals: '>'.
 	self assert: stmt condition lhs identifier equals: 'x'.
 	self assert: stmt condition rhs value equals: 1.
-	stmt := self parse: 'if(x>y){var x=1;};' rule: #statement.
+	stmt := self parse: 'if(x>y){var x=1;}' rule: #statement.
 	self assert: stmt condition operator equals: '>'.
 	self assert: stmt condition lhs identifier equals: 'x'.
 	self assert: stmt condition rhs identifier equals: 'y'.
-	stmt := self parse: 'if(x>y){var x=1;x=3;};' rule: #statement.
+	stmt := self parse: 'if(x>y){var x=1;x=3;}' rule: #statement.
 	self assert: stmt condition operator equals: '>'.
 	self assert: stmt condition lhs identifier equals: 'x'.
 	self assert: stmt condition rhs identifier equals: 'y'.

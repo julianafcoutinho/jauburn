@@ -188,7 +188,7 @@ JbParser >> ifElseStatement [
 { #category : #statements }
 JbParser >> ifStatement [ 
 
-	^ 'if' asParser trim, $( asParser trim , expression , $) asParser trim  , statementBlock, ';' asParser trim
+	^ 'if' asParser trim, $( asParser trim , expression , $) asParser trim  , statementBlock
 	  ==> [ :arr | JbIfStatementNode new 
 		condition: arr third;
 		body:arr fifth;
@@ -249,7 +249,7 @@ JbParser >> start [
 JbParser >> statement [
 
 	^ variableDeclarationStatement / assignmentStatement
-	  / returnStatement / functionCallStatement / printStatement / ifStatement /ifElseStatement / 		whileStatement / inputStatement 
+	  / returnStatement / functionCallStatement / printStatement / ifElseStatement / ifStatement /		whileStatement / inputStatement 
 ]
 
 { #category : #statements }
@@ -298,7 +298,7 @@ JbParser >> variableDeclarationStatement [
 { #category : #statements }
 JbParser >> whileStatement [
 
-	^ 'while' asParser trim, $( asParser trim , expression , $) asParser trim  , statementBlock, ';' asParser trim
+	^ 'while' asParser trim, $( asParser trim , expression , $) asParser trim  , statementBlock
 	  ==> [ :arr | JbWhileStatementNode new 
 		condition: arr third;
 		body:arr fifth;
