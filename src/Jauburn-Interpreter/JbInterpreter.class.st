@@ -18,51 +18,58 @@ JbInterpreter class >> newWithStandardLibrary [
 
 { #category : #'as yet unclassified' }
 JbInterpreter class >> standardLibrary [
+	"I was not sure how to address negative roots, so I'm returning 0"
 	
-	^ 'var x = 0;
-	var not = function(b) {
-	if(b) {return false;} 
-	else {return true;}
-	};
-	x = 1;
-	var and = function(a, b) {
-	if(b) 
-											{if (a) {return true;}}
-											else {return false;} 
-											};
-	x = 2;
-		var or = function(a, b) {
-	if(b) 
-											{return true;}
-											else { if(a) {return true;} else { return false; }
-											}};
-	x = 3;
-	var abs = function(f) { if(f<0) { return -1*f;} else {return f;}};
-	x = 4;
-	var sqrt = function(x) { 
-	var n = x; 
-	var rootNotFound = true; 
-	var root = 0;
-	var diff = 1;
-	 while(rootNotFound){
-	 root = 0.5 * (n + x/n); 
-	diff = abs(root-n);
-	if(diff < 0.00001) { 
-	rootNotFound = false; }
-	n = root;}
-	return root;};
-	x = 5;
-	var gcd = function(a, b) { 
-	if (a == 0) { 
-	return b;
-	 }
-	 if (b == 0) { 
-	return a;
-	 }
-	return gcd(b%a, a);};
-	x = 6;
-	var x = gcd(16, 4);
-	x = sqrt(24);'
+	^ '
+	var not = 
+		function(b) {
+			if(b) {return false;} 
+			else {return true;}
+		};
+
+	var and = 
+		function(a, b) {
+			if(b) { if (a) {return true;} }
+			else {return false;} 
+		};
+
+	var or = 
+		function(a, b) {
+			if(b) 	{return true;}
+			else { 
+				if(a) {return true;} 
+				else { return false; }
+			}
+		};
+
+	var abs = 
+		function(f) { 
+			if(f<0) { return -1*f;} 
+			else {return f;}
+		};
+
+	var sqrt = 
+		function(x) { 
+			if (x > 0) { 
+				var n = x; 
+				var root = 0;
+				var diff = 1;
+	 				while(diff > 0.00001){
+	 					root = 0.5 * (n + x/n); 
+						diff = abs(root-n);
+						n = root;
+					}
+				return root;}
+			else {
+				return x;}
+		};
+
+	var gcd = 
+		function(a, b) { 
+			if (a == 0) { return abs(b); }
+	 		if (b == 0) { return abs(a); }
+		return gcd(b%a, a);
+		};'
 ]
 
 { #category : #accessing }
